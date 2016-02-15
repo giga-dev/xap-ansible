@@ -1,0 +1,18 @@
+---
+# Variables listed here are applicable to all host groups
+xap_url: http://gigaspaces-repository-eu.s3.amazonaws.com/com/gigaspaces/xap-core/11.0.0-SNAPSHOT/gigaspaces-xap-premium-11.0.0-m11-b14711-188.zip
+home_dir: /tmp/xap
+lookup_groups: default-groups
+lus_port: 4444
+lrmi_comm_min_port: 7122
+lrmi_comm_max_port: 7222
+gs_http_port: 7104
+gs_registry_port: 7102
+webui_port: 9099
+interface_name: eth0
+#optional vars
+gsa_java_options:
+gsc_java_options:
+gsm_java_options:
+lus_java_options:
+ext_java_options:

@@ -1,0 +1,50 @@
+---
+- hosts: container
+  name: install XAP container play
+  gather_facts: true
+  roles:
+    - install_java
+  environment:
+    lus_port: "{{lus_port}}"
+    XAP_HOME: "{{home_dir}}/gshome"
+    LOOKUPGROUPS: "{{lookup_groups}}"
+    GSA_JAVA_OPTIONS: "{{gsa_java_options}}"
+    GSC_JAVA_OPTIONS: "{{gsc_java_options}}"
+    GSM_JAVA_OPTIONS: "{{gsm_java_options}}"
+    LUS_JAVA_OPTIONS: "{{lus_java_options}}"
+    EXT_JAVA_OPTIONS: "{{ext_java_options}}"
+    lrmi_comm_min_port: "{{lrmi_comm_min_port}}"
+    lrmi_comm_max_port: "{{lrmi_comm_max_port}}"
+    gs_http_port: "{{gs_http_port}}"
+    gs_registry_port: "{{gs_registry_port}}"
+    global_lus_cnt: "{{global_lus_cnt}}"
+    lus_cnt: "{{lus_cnt}}"
+    global_gsm_cnt: "{{global_gsm_cnt}}"
+    gsm_cnt: "{{gsm_cnt}}"
+    gsc_cnt: "{{gsc_cnt}}"
+    webui_port: "{{webui_port}}"
+    interface_name: "{{interface_name}}"
+  tasks:
+  - name: fetch XAP
+    get_url: url="{{xap_url}}" dest={{home_dir}} mode=0777
+  - name: get zip file name
+    shell: "ls gigaspaces*.zip"
+    args:
+      chdir: "{{home_dir}}"
+    register: zip_name
+  - name: exctract XAP
+    unarchive: src="{{home_dir}}/{{zip_name.stdout}}" dest={{home_dir}} mode=0777 copy=no
+  - name: delete zip
+    command: "rm {{home_dir}}/{{zip_name.stdout}}"
+  - name: rename XAP home folder
+    shell: "mv `ls -d {{home_dir}}/gigaspaces*premium*` gshome"
+    args:
+      chdir: "{{home_dir}}"
+  - name: copy locators file
+    copy: src=locators.txt dest={{home_dir}} mode=0777
+  - name: copy mgt run script
+    copy: src=files/run-xap.sh dest={{home_dir}} mode=0777
+  - name: deploy XAP container
+    shell: "nohup ./run-xap.sh &"
+    args:
+      chdir: "{{home_dir}}"

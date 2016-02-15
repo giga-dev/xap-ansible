@@ -1,0 +1,8 @@
+[local]
+localhost
+
+[management]
+#ips of management machines
+
+[container]
+#ips of GSCs machines

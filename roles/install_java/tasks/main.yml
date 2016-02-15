@@ -1,0 +1,9 @@
+---
+- name: create directory
+  command: "mkdir -p {{download_folder}}"
+- name: install JAVA
+  command: "wget -q -O {{java_archive}} --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' {{download_url}} creates={{java_archive}}"
+- name: Unpack archive
+  command: "tar -zxf {{java_archive}} -C {{download_folder}} creates={{java_name}}"
+- name: Rename JAVA folder
+  command: mv jdk1.8.0_05 java chdir={{download_folder}}

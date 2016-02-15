@@ -1,0 +1,13 @@
+---
+# top level playbook to deploy whole large cluster system - mgt,agents,webui
+- name: clear locators file
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: remove locators.txt if exists
+      command: rm -f locators.txt
+      ignore_errors: yes
+
+- include: mgt_deploy.yml
+- include: container_deploy.yml
